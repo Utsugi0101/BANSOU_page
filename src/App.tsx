@@ -1,179 +1,147 @@
-import { useMemo, useState } from 'react';
 import './App.css';
 
-type PageId = 'overview' | 'system' | 'adoption' | 'about';
-
-type NavItem = {
-  id: PageId;
-  label: string;
-};
-
-const navItems: NavItem[] = [
-  { id: 'overview', label: 'トップ' },
-  { id: 'system', label: 'システム' },
-  { id: 'adoption', label: '導入' },
-  { id: 'about', label: 'BANSOUについて' },
-];
-
 function App() {
-  const [page, setPage] = useState<PageId>('overview');
-  const current = useMemo(() => navItems.find((item) => item.id === page), [page]);
-
   return (
-    <div className="layout">
-      <header className="hero">
-        <p className="hero-tag">UNDERSTANDING GATE FOR AI ERA</p>
-        <h1>BANSOU</h1>
-        <p className="hero-copy">
-          理解をCIに組み込む。生成AI時代の開発チーム向けに、
-          <br />
-          「読めているコードだけを本番へ」運ぶ仕組み。
-        </p>
-        <nav className="main-nav" aria-label="BANSOU pages">
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              className={`nav-pill ${item.id === page ? 'active' : ''}`}
-              onClick={() => setPage(item.id)}
-            >
-              {item.label}
-            </button>
-          ))}
-        </nav>
+    <div className="page">
+      <header className="site-header">
+        <div className="header-inner">
+          <a className="brand" href="#top">
+            BANSOU
+          </a>
+          <nav className="header-nav" aria-label="Main navigation">
+            <a href="#overview">概要</a>
+            <a href="#system">システム</a>
+            <a href="#adoption">導入</a>
+            <a href="#about">BANSOUについて</a>
+          </nav>
+        </div>
       </header>
 
-      <main className="panel">
-        <p className="section-label">{current?.label}</p>
-        {page === 'overview' && <OverviewPage />}
-        {page === 'system' && <SystemPage />}
-        {page === 'adoption' && <AdoptionPage />}
-        {page === 'about' && <AboutPage />}
+      <main id="top" className="content">
+        <section className="hero">
+          <p className="eyebrow">UNDERSTANDING BEFORE MERGE</p>
+          <h1>理解していないコードを、本番に入れない。</h1>
+          <p>
+            BANSOUは、差分理解クイズとPRゲートを接続して、
+            チームの開発品質を守るための仕組みです。
+          </p>
+        </section>
+
+        <section id="overview" className="section">
+          <h2>1. 概要</h2>
+          <p>
+            生成AI時代では、実装スピードの向上と引き換えに「未理解のままの実装」が増えます。
+            BANSOUは、レビュー前に理解を確認し、理解の証明をCIに組み込むことで、
+            品質低下とレビュー負荷の偏りを減らします。
+          </p>
+          <div className="cards three">
+            <article className="card">
+              <h3>問題</h3>
+              <ul>
+                <li>未理解コードの本番流入</li>
+                <li>セキュリティリスクの見落とし</li>
+                <li>保守運用の属人化</li>
+              </ul>
+            </article>
+            <article className="card">
+              <h3>解決</h3>
+              <ul>
+                <li>差分単位の理解クイズ</li>
+                <li>合格証明のサーバー管理</li>
+                <li>PR時の自動ゲート判定</li>
+              </ul>
+            </article>
+            <article className="card">
+              <h3>価値</h3>
+              <ul>
+                <li>レビューの質を上げる</li>
+                <li>チーム全体の理解を可視化</li>
+                <li>説明可能な開発プロセス</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section id="system" className="section">
+          <h2>2. システム</h2>
+          <p>BANSOUは3つのコンポーネントで構成されます。</p>
+          <div className="cards three">
+            <article className="card">
+              <h3>VSCode Extension</h3>
+              <p>差分抽出、クイズ表示、回答送信を担当。</p>
+            </article>
+            <article className="card">
+              <h3>BANSOU Server</h3>
+              <p>クイズ生成、採点、証明発行、ledger保存、gate判定を担当。</p>
+            </article>
+            <article className="card">
+              <h3>GitHub Action</h3>
+              <p>PR差分とledgerの整合を確認し、マージ可否を判定。</p>
+            </article>
+          </div>
+          <article className="flow">
+            <h3>処理フロー</h3>
+            <ol>
+              <li>差分検知</li>
+              <li>クイズ生成</li>
+              <li>回答と採点</li>
+              <li>証明保存</li>
+              <li>PRゲート判定</li>
+            </ol>
+          </article>
+        </section>
+
+        <section id="adoption" className="section">
+          <h2>3. 導入</h2>
+          <p>最小の導入手順です。小さく始めて、徐々に必須化できます。</p>
+          <article className="card">
+            <h3>導入ステップ</h3>
+            <ol>
+              <li>Server をデプロイし、ISSUER/JWKS/GATE TOKEN を設定</li>
+              <li>Action をワークフローへ追加</li>
+              <li>拡張機能で Server URL と user(sub) を設定</li>
+              <li>Required Check に `Verify BANSOU Token` を設定</li>
+            </ol>
+          </article>
+          <article className="card">
+            <h3>公開URL</h3>
+            <ul>
+              <li>
+                VSCode Marketplace:{' '}
+                <a
+                  href="https://marketplace.visualstudio.com/items?itemName=utsugi0101.bansou"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  utsugi0101.bansou
+                </a>
+              </li>
+            </ul>
+          </article>
+        </section>
+
+        <section id="about" className="section">
+          <h2>4. BANSOUについて</h2>
+          <div className="cards two">
+            <article className="card">
+              <h3>SecHack365</h3>
+              <p>
+                ここにSecHack365でのテーマ背景、取り組んだ課題、開発の狙いを書けます。
+              </p>
+            </article>
+            <article className="card">
+              <h3>開発者プロフィール</h3>
+              <p>
+                ここにあなた自身の紹介、問題意識、今後の展望を記載できます。
+              </p>
+            </article>
+          </div>
+          <blockquote className="concept">
+            BANSOUはコードを書くためのツールではない。理解をCIに組み込む仕組みである。
+          </blockquote>
+        </section>
       </main>
     </div>
-  );
-}
-
-function OverviewPage() {
-  return (
-    <section className="section-grid">
-      <article className="feature-card">
-        <h2>概要</h2>
-        <p>
-          BANSOUは、実装差分への理解クイズと証明トークンを使って、
-          マージ前に「理解したこと」を可視化・検証する仕組みです。
-        </p>
-      </article>
-      <article className="feature-card">
-        <h2>解くべき課題</h2>
-        <ul>
-          <li>未理解コードの本番流入</li>
-          <li>レビュー負荷の偏り</li>
-          <li>生成AI導入後の保守品質低下</li>
-        </ul>
-      </article>
-      <article className="feature-card full">
-        <h2>コア体験</h2>
-        <ol>
-          <li>差分を検知してクイズ生成</li>
-          <li>回答・評価で理解を確認</li>
-          <li>証明をサーバー台帳へ保存</li>
-          <li>PRゲートでマージ可否を自動判定</li>
-        </ol>
-      </article>
-    </section>
-  );
-}
-
-function SystemPage() {
-  return (
-    <section className="section-grid">
-      <article className="feature-card">
-        <h2>VSCode Extension</h2>
-        <p>差分取得、クイズUI、回答送信を担当。開発者が最初に触れる入口です。</p>
-      </article>
-      <article className="feature-card">
-        <h2>BANSOU Server</h2>
-        <p>
-          クイズ生成・採点・attestation発行・ledger保存・gate評価を一元的に提供します。
-        </p>
-      </article>
-      <article className="feature-card">
-        <h2>GitHub Action</h2>
-        <p>
-          PR差分を取得し、サーバーの <code>/gate/evaluate</code> を照会してマージ可否を判定します。
-        </p>
-      </article>
-      <article className="feature-card full">
-        <h2>技術スタック</h2>
-        <ul className="chip-list">
-          <li>VSCode Extension API</li>
-          <li>Cloudflare Workers + D1</li>
-          <li>JWT (EdDSA / JWKS)</li>
-          <li>GitHub Actions</li>
-          <li>OpenAI API (Quiz generation)</li>
-        </ul>
-      </article>
-    </section>
-  );
-}
-
-function AdoptionPage() {
-  return (
-    <section className="section-grid">
-      <article className="feature-card full">
-        <h2>導入ステップ</h2>
-        <ol>
-          <li>BANSOU Server をデプロイし、ISSUER/JWKS/GATE API TOKEN を設定</li>
-          <li>リポジトリへ BANSOU Action workflow を追加</li>
-          <li>VSCode拡張で server URL と sub を設定</li>
-          <li>ブランチ保護で Verify BANSOU Token を Required Check にする</li>
-        </ol>
-      </article>
-      <article className="feature-card full">
-        <h2>最小設定例</h2>
-        <pre>
-          <code>{`issuer: https://bansou-server.example.workers.dev
-jwks_url: https://bansou-server.example.workers.dev/.well-known/jwks.json
-gate_url: https://bansou-server.example.workers.dev`}</code>
-        </pre>
-      </article>
-      <article className="feature-card full">
-        <h2>公開URL</h2>
-        <ul>
-          <li>
-            VSCode Marketplace:{' '}
-            <a href="https://marketplace.visualstudio.com/items?itemName=utsugi0101.bansou" target="_blank" rel="noreferrer">
-              https://marketplace.visualstudio.com/items?itemName=utsugi0101.bansou
-            </a>
-          </li>
-        </ul>
-      </article>
-    </section>
-  );
-}
-
-function AboutPage() {
-  return (
-    <section className="section-grid">
-      <article className="feature-card">
-        <h2>SecHack365について</h2>
-        <p>
-          この枠にSecHack365の参加テーマや活動背景、なぜBANSOUを作るに至ったかを記載できます。
-        </p>
-      </article>
-      <article className="feature-card">
-        <h2>開発者プロフィール</h2>
-        <p>
-          ここにあなたの経歴、問題意識、今後の展望を記載してください。
-          チームや採用向け説明としても使えるセクションです。
-        </p>
-      </article>
-      <article className="feature-card full">
-        <h2>コンセプト</h2>
-        <blockquote>「BANSOUはコードを書くためのツールではない。理解をCIに組み込む仕組みである。」</blockquote>
-      </article>
-    </section>
   );
 }
 

@@ -1,209 +1,191 @@
-#root {
+.page {
   min-height: 100vh;
+  background:
+    radial-gradient(1200px 600px at -10% -20%, rgba(245, 158, 11, 0.16), transparent 70%),
+    linear-gradient(180deg, #f8fafc 0%, #ffffff 48%, #f0fdf4 100%);
 }
 
-.layout {
-  min-height: 100vh;
-  padding: 28px;
-  background:
-    radial-gradient(1300px 600px at -10% -10%, rgba(248, 146, 48, 0.2), transparent 65%),
-    radial-gradient(900px 500px at 110% 0%, rgba(16, 185, 129, 0.16), transparent 64%),
-    linear-gradient(165deg, #f8fafc 0%, #fffaf3 50%, #effcf6 100%);
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.85);
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.header-inner {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0f172a;
+  text-decoration: none;
+  letter-spacing: 0.06em;
+}
+
+.header-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.header-nav a {
+  text-decoration: none;
+  color: #334155;
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+.header-nav a:hover {
+  background: #f1f5f9;
+}
+
+.content {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  padding: 20px 18px 40px;
+  scroll-behavior: smooth;
 }
 
 .hero {
-  width: min(1120px, 100%);
-  margin: 0 auto 18px;
-  padding: 26px 24px;
-  border: 1px solid #d1d5db;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.84);
-  backdrop-filter: blur(6px);
-  animation: fade-up 0.5s ease;
+  padding: 28px 24px;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
 }
 
-.hero-tag {
-  margin: 0 0 6px;
-  font-size: 0.76rem;
-  font-weight: 700;
+.eyebrow {
+  margin: 0;
+  font-size: 0.78rem;
   letter-spacing: 0.1em;
+  font-weight: 700;
   color: #b45309;
 }
 
 .hero h1 {
-  margin: 0;
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  line-height: 1.1;
+  margin: 10px 0 12px;
+  font-size: clamp(1.9rem, 3.8vw, 3rem);
+  line-height: 1.15;
   color: #0f172a;
 }
 
-.hero-copy {
-  margin: 10px 0 0;
-  font-size: 1rem;
+.hero p {
+  margin: 0;
+  color: #334155;
+  line-height: 1.8;
+}
+
+.section {
+  margin-top: 24px;
+  padding: 22px 18px;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.section h2 {
+  margin: 0 0 12px;
+  font-size: 1.55rem;
+  color: #0f172a;
+}
+
+.section > p {
+  margin: 0 0 14px;
+  color: #334155;
+  line-height: 1.8;
+}
+
+.cards {
+  display: grid;
+  gap: 12px;
+}
+
+.cards.two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.cards.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.card {
+  border: 1px solid #dbe4ee;
+  border-radius: 14px;
+  padding: 14px;
+  background: #ffffff;
+}
+
+.card h3 {
+  margin: 0 0 8px;
+  font-size: 1.02rem;
+  color: #1e293b;
+}
+
+.card p,
+.card li {
   color: #334155;
   line-height: 1.7;
 }
 
-.main-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 18px;
-}
-
-.nav-pill {
-  border: 1px solid #cbd5e1;
-  border-radius: 999px;
-  background: #ffffff;
-  color: #334155;
-  padding: 10px 14px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
-}
-
-.nav-pill:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.08);
-}
-
-.nav-pill.active {
-  background: #0f172a;
-  color: #f8fafc;
-  border-color: #0f172a;
-}
-
-.panel {
-  width: min(1120px, 100%);
-  margin: 0 auto;
-  padding: 18px;
-  border-radius: 24px;
-}
-
-.section-label {
-  margin: 0 0 12px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: #0f766e;
-}
-
-.section-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.feature-card {
-  border: 1px solid #dbe4ee;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.92);
-  padding: 18px;
-  animation: fade-up 0.4s ease both;
-}
-
-.feature-card:nth-child(2) {
-  animation-delay: 0.04s;
-}
-
-.feature-card:nth-child(3) {
-  animation-delay: 0.08s;
-}
-
-.feature-card:nth-child(4) {
-  animation-delay: 0.12s;
-}
-
-.feature-card.full {
-  grid-column: 1 / -1;
-}
-
-.feature-card h2 {
-  margin: 0 0 8px;
-  font-size: 1.2rem;
-  color: #0f172a;
-}
-
-.feature-card p,
-.feature-card li {
-  color: #334155;
-  line-height: 1.75;
-}
-
-.feature-card a {
-  color: #0369a1;
-}
-
-.feature-card ul,
-.feature-card ol {
+.card ul,
+.card ol {
   margin: 0;
   padding-left: 18px;
 }
 
-.chip-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  list-style: none;
-  padding: 0;
+.card a {
+  color: #0369a1;
+  font-weight: 600;
 }
 
-.chip-list li {
-  border: 1px solid #d1fae5;
-  background: #ecfdf5;
-  border-radius: 999px;
-  padding: 6px 10px;
-  font-size: 0.86rem;
-}
-
-pre {
-  margin: 0;
-  background: #0f172a;
-  color: #f8fafc;
-  border-radius: 12px;
+.flow {
+  margin-top: 12px;
+  border: 1px solid #dbe4ee;
+  border-radius: 14px;
   padding: 14px;
-  overflow-x: auto;
+  background: #f8fafc;
 }
 
-blockquote {
+.flow h3 {
+  margin: 0 0 8px;
+}
+
+.flow ol {
   margin: 0;
-  padding: 14px;
+  padding-left: 18px;
+}
+
+.concept {
+  margin: 14px 0 0;
+  padding: 12px 14px;
   border-left: 4px solid #f59e0b;
   background: #fffbeb;
-  border-radius: 8px;
   color: #78350f;
+  border-radius: 8px;
 }
 
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (max-width: 820px) {
-  .layout {
-    padding: 14px;
-  }
-
-  .hero {
-    padding: 20px 16px;
-  }
-
-  .panel {
-    padding: 6px;
-  }
-
-  .section-grid {
+@media (max-width: 900px) {
+  .cards.two,
+  .cards.three {
     grid-template-columns: 1fr;
   }
+}
 
-  .feature-card.full {
-    grid-column: auto;
+@media (max-width: 680px) {
+  .header-inner {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
