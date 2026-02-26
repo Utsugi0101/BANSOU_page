@@ -51,6 +51,11 @@
   background: #f1f5f9;
 }
 
+.header-nav a.active {
+  background: #0f172a;
+  color: #f8fafc;
+}
+
 .content {
   width: min(1100px, 100%);
   margin: 0 auto;
@@ -93,6 +98,7 @@
   border: 1px solid #e2e8f0;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.95);
+  animation: page-fade 0.18s ease;
 }
 
 .section h2 {
@@ -174,6 +180,17 @@
   background: #fffbeb;
   color: #78350f;
   border-radius: 8px;
+}
+
+@keyframes page-fade {
+  from {
+    opacity: 0.2;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (max-width: 900px) {
