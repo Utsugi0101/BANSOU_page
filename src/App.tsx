@@ -59,11 +59,11 @@ function App() {
         {route === 'overview' && (
           <section id="overview" className="section">
             <section className="hero">
-              <p className="hero-lead">理解を伴う開発のために。</p>
+              <p className="hero-lead">理解を置いていかない開発のために。</p>
               <h1>理解を確認し、確認されない限りマージしない。</h1>
               <p>
-                BANSOUは、生成されたコードを読み、理解を確認し、
-                その結果をPRのマージ条件に接続するための仕組みです。
+                BANSOUは、開発の加速に対して置いていかれやすい「理解」を、
+                支援・測定・確認の流れでチーム開発に戻すための仕組みです。
               </p>
               <a className="hero-button" href={toHash('system')}>
                 仕組みを見る
@@ -76,19 +76,19 @@ function App() {
           </p>
           <div className="list-grid">
             <article>
-              <h3>課題</h3>
+              <h3>影響（技術・組織・心理）</h3>
               <ul>
-                <li>生成されたコードを十分に読まないまま変更が進む</li>
-                <li>レビュー観点が個人依存になりやすい</li>
-                <li>保守時に変更意図を追いにくい</li>
+                <li>技術: 脆弱性や障害要因を見落としやすい</li>
+                <li>組織: レビュワー依存と属人化が進みやすい</li>
+                <li>心理: 制御できない感覚が負担になりやすい</li>
               </ul>
             </article>
             <article>
               <h3>BANSOUの役割</h3>
               <ul>
-                <li>差分に対する理解クイズを生成する</li>
-                <li>回答結果をサーバ側で評価する</li>
-                <li>評価結果をPR検証に接続する</li>
+                <li>理解支援: 差分読解と関連ドキュメント参照を促す</li>
+                <li>理解測定: クイズ回答をサーバ側で評価する</li>
+                <li>理解確認: 結果をPRの判定条件に接続する</li>
               </ul>
             </article>
             <article>
@@ -155,12 +155,13 @@ function App() {
             </svg>
           </div>
           <ol className="flow">
-            <li>実装者が差分を取得し、クイズを生成する</li>
-            <li>サーバが回答を評価し、理解証明トークンを発行する</li>
+            <li>生成AIで実装する</li>
+            <li>差分に対する理解確認クイズを実施する</li>
+            <li>サーバが評価し、理解証明トークンを発行する</li>
             <li>GitHub ActionがPR時に証明と差分を検証する</li>
-            <li>条件を満たす場合のみ、リポジトリでmergeを許可する</li>
+            <li>条件を満たす場合のみ、mergeを許可する</li>
           </ol>
-          </section>
+        </section>
         )}
 
         {route === 'adoption' && (
@@ -185,22 +186,22 @@ function App() {
               </ul>
             </article>
           </div>
-          </section>
+        </section>
         )}
 
         {route === 'about' && (
           <section id="about" className="section">
           <h2>BANSOUについて</h2>
           <p>
-            BANSOUは、コード生成を加速するためのツールではありません。
-            生成された変更を読み、理解を確認し、その確認結果をマージ制御に接続するための仕組みです。
+            BANSOUは、コード生成を速くするためのツールではありません。
+            「理解したいと思えば理解できる状態」を維持しながら、
+            生成された変更をチームで扱うための運用基盤です。
           </p>
           <p>
-            ここで扱う「理解」とは、変更内容を説明できること、影響範囲を把握できること、
-            そして不明点を明確にできることです。BANSOUはこの確認を個人判断に任せず、
-            チームの運用として扱える形にします。
+            ここで扱う「理解」は、変更内容の説明、影響範囲の把握、不明点の明確化です。
+            個人の努力に依存せず、チームの運用として継続できる形を目指します。
           </p>
-          </section>
+        </section>
         )}
       </main>
     </div>
