@@ -63,8 +63,8 @@ function App() {
             <p className="eyebrow">理解確認を前提としたマージ判定</p>
             <h1>変更内容を説明可能な状態で、開発を前進させる。</h1>
             <p className="hero-copy">
-              BANSOUは、差分理解クイズとPRゲートを接続して、
-              生成AI活用下においても「変更内容を説明可能であること」を確認するための運用基盤です。
+              BANSOUは、差分理解クイズとPRゲートを接続し、
+              変更理解の確認を開発フローに組み込みます。
             </p>
           </div>
           <div className="hero-side" aria-hidden="true">
@@ -100,17 +100,16 @@ function OverviewPage() {
         <h2>概要</h2>
       </header>
       <p>
-        生成AIの活用により実装速度は向上する一方で、変更の意図や影響範囲が十分に共有されないまま
-        開発が進行するリスクが高まります。BANSOUはレビュー前の理解確認を運用に組み込み、
-        その結果をPR判定へ接続することで、品質と保守性の両立を目指します。
+        生成AI活用で実装速度は向上しました。一方で、変更意図や影響範囲の共有不足が課題です。
+        BANSOUは理解確認をPR判定と接続し、品質と保守性の維持を支援します。
       </p>
       <div className="cards three">
         <article className="card">
           <h3>問題</h3>
           <ul>
-            <li>未理解の変更が本番環境へ流入しやすい</li>
+            <li>未理解の変更が本番へ入りやすい</li>
             <li>レビュー観点が属人化しやすい</li>
-            <li>保守フェーズで変更意図を追跡しづらい</li>
+            <li>保守時に変更意図を追いにくい</li>
           </ul>
         </article>
         <article className="card">
@@ -124,9 +123,9 @@ function OverviewPage() {
         <article className="card">
           <h3>期待効果</h3>
           <ul>
-            <li>変更内容の説明可能性が向上する</li>
-            <li>レビュー品質のばらつきを抑制できる</li>
-            <li>運用時の理解コストを低減できる</li>
+            <li>説明可能性の向上</li>
+            <li>レビュー品質の平準化</li>
+            <li>運用時の理解コスト低減</li>
           </ul>
         </article>
       </div>
@@ -141,19 +140,19 @@ function SystemPage() {
         <span>02</span>
         <h2>システム</h2>
       </header>
-      <p>BANSOUは、拡張機能・サーバー・GitHub Actionの3要素で構成されます。</p>
+      <p>拡張機能・サーバー・GitHub Actionの3要素で構成されます。</p>
       <div className="cards three">
         <article className="card">
           <h3>VSCode拡張</h3>
-          <p>差分取得、クイズ表示、回答送信を担当します。</p>
+          <p>差分取得、クイズ表示、回答送信を担当。</p>
         </article>
         <article className="card">
           <h3>BANSOU Server</h3>
-          <p>クイズ生成、採点、証明発行、台帳保存、判定APIを担当します。</p>
+          <p>クイズ生成、採点、証明発行、台帳保存、判定APIを担当。</p>
         </article>
         <article className="card">
           <h3>GitHub Action</h3>
-          <p>PR差分と証明の整合性を確認し、マージ可否を判定します。</p>
+          <p>PR差分と証明を照合し、マージ可否を判定。</p>
         </article>
       </div>
       <div className="diagram">
@@ -166,11 +165,11 @@ function SystemPage() {
       <article className="flow">
         <h3>処理フロー</h3>
         <ol>
-          <li>差分情報を取り込み、理解確認クイズを生成する</li>
-          <li>回答結果をサーバー側で採点する</li>
-          <li>合格結果を証明情報として保存する</li>
-          <li>PR時に証明情報の有無および整合性を検証する</li>
-          <li>条件を満たした変更のみをマージ可能とする</li>
+          <li>差分からクイズを生成</li>
+          <li>サーバーで採点</li>
+          <li>合格結果を証明として保存</li>
+          <li>PR時に証明を検証</li>
+          <li>条件充足時のみマージ可能</li>
         </ol>
       </article>
     </section>
@@ -184,7 +183,7 @@ function AdoptionPage() {
         <span>03</span>
         <h2>導入</h2>
       </header>
-      <p>以下は最小構成での導入手順です。初期検証後、運用ポリシーに応じて必須化します。</p>
+      <p>最小構成での導入手順です。検証後に必須化できます。</p>
       <article className="card">
         <h3>導入ステップ</h3>
         <ol>
@@ -221,8 +220,8 @@ function AboutPage() {
         <h2>BANSOUについて</h2>
       </header>
       <p>
-        BANSOUは生成AIの利用を制限する仕組みではなく、
-        生成された変更を理解し、説明可能な状態で運用するための基盤です。
+        BANSOUは生成AI利用を止める仕組みではなく、
+        生成された変更を理解可能な状態で運用するための基盤です。
       </p>
       <div className="cards two">
         <article className="card">
