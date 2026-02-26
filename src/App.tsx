@@ -1,251 +1,164 @@
-import { useEffect, useState } from 'react';
 import './App.css';
 
-type Route = 'overview' | 'system' | 'adoption' | 'about';
-
-const routeItems: Array<{ id: Route; label: string }> = [
-  { id: 'overview', label: '概要' },
-  { id: 'system', label: 'システム' },
-  { id: 'adoption', label: '導入' },
-  { id: 'about', label: 'BANSOUについて' },
-];
-
-function parseHashRoute(hash: string): Route {
-  const normalized = hash.replace(/^#\/?/, '').trim();
-  if (normalized === 'system') return 'system';
-  if (normalized === 'adoption') return 'adoption';
-  if (normalized === 'about') return 'about';
-  return 'overview';
-}
-
-function toHash(route: Route): string {
-  return `#/${route}`;
-}
-
 function App() {
-  const [route, setRoute] = useState<Route>(() =>
-    parseHashRoute(window.location.hash)
-  );
-
-  useEffect(() => {
-    const onHashChange = () => setRoute(parseHashRoute(window.location.hash));
-    window.addEventListener('hashchange', onHashChange);
-    if (!window.location.hash) {
-      window.location.hash = toHash('overview');
-    }
-    return () => window.removeEventListener('hashchange', onHashChange);
-  }, []);
-
   return (
     <div className="page">
-      <header className="site-header">
-        <div className="header-inner">
-          <a className="brand" href={toHash('overview')}>
-            <img src="/アイコン.png" alt="" aria-hidden="true" />
-            <span>BANSOU</span>
+      <header className="topbar">
+        <div className="wrap topbar-inner">
+          <a href="#top" className="brand">
+            BANSOU
           </a>
-          <nav className="header-nav" aria-label="Main navigation">
-            {routeItems.map((item) => (
-              <a
-                key={item.id}
-                href={toHash(item.id)}
-                className={item.id === route ? 'active' : ''}
-              >
-                {item.label}
-              </a>
-            ))}
+          <nav className="nav" aria-label="ページ内ナビゲーション">
+            <a href="#overview">概要</a>
+            <a href="#system">システム</a>
+            <a href="#adoption">導入</a>
+            <a href="#about">BANSOUについて</a>
           </nav>
         </div>
       </header>
 
-      <main className="content">
-        {route === 'overview' && <OverviewPage />}
-        {route === 'system' && <SystemPage />}
-        {route === 'adoption' && <AdoptionPage />}
-        {route === 'about' && <AboutPage />}
+      <main id="top" className="wrap main">
+        <section className="hero section">
+          <p className="hero-lead">理解を伴う開発のために。</p>
+          <h1>理解を確認し、確認されない限りマージしない。</h1>
+          <p>
+            BANSOUは、生成されたコードを読み、理解を確認し、
+            その結果をPRのマージ条件に接続するための仕組みです。
+          </p>
+          <a className="hero-button" href="#system">
+            仕組みを見る
+          </a>
+        </section>
+
+        <section id="overview" className="section">
+          <h2>概要</h2>
+          <p>
+            生成AIを使った開発では、実装速度が上がる一方で、変更内容の理解が不足したままPRが進む課題があります。
+            BANSOUはこの課題に対して、理解確認を運用フローに組み込みます。
+          </p>
+          <div className="list-grid">
+            <article>
+              <h3>課題</h3>
+              <ul>
+                <li>生成されたコードを十分に読まないまま変更が進む</li>
+                <li>レビュー観点が個人依存になりやすい</li>
+                <li>保守時に変更意図を追いにくい</li>
+              </ul>
+            </article>
+            <article>
+              <h3>BANSOUの役割</h3>
+              <ul>
+                <li>差分に対する理解クイズを生成する</li>
+                <li>回答結果をサーバ側で評価する</li>
+                <li>評価結果をPR検証に接続する</li>
+              </ul>
+            </article>
+            <article>
+              <h3>制御する対象</h3>
+              <ul>
+                <li>理解確認が行われたか</li>
+                <li>対象差分に対応する証明があるか</li>
+                <li>条件を満たさない変更をマージさせないこと</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section id="system" className="section">
+          <h2>システム</h2>
+          <p>
+            構成要素は、実装者、VSCode拡張、サーバ、GitHub Action、リポジトリです。
+            理解証明トークンを介して、merge制御を行います。
+          </p>
+          <div className="diagram-box">
+            <svg viewBox="0 0 980 220" role="img" aria-label="BANSOUのシステム構成図">
+              <rect x="20" y="80" width="160" height="56" className="box" />
+              <text x="100" y="112" textAnchor="middle" className="label">
+                実装者
+              </text>
+
+              <rect x="220" y="80" width="170" height="56" className="box" />
+              <text x="305" y="112" textAnchor="middle" className="label">
+                VSCode拡張
+              </text>
+
+              <rect x="430" y="80" width="130" height="56" className="box" />
+              <text x="495" y="112" textAnchor="middle" className="label">
+                サーバ
+              </text>
+
+              <rect x="600" y="80" width="170" height="56" className="box" />
+              <text x="685" y="112" textAnchor="middle" className="label">
+                GitHub Action
+              </text>
+
+              <rect x="810" y="80" width="150" height="56" className="box" />
+              <text x="885" y="112" textAnchor="middle" className="label">
+                リポジトリ
+              </text>
+
+              <line x1="180" y1="108" x2="220" y2="108" className="line" />
+              <line x1="390" y1="108" x2="430" y2="108" className="line" />
+              <line x1="560" y1="108" x2="600" y2="108" className="line" />
+              <line x1="770" y1="108" x2="810" y2="108" className="line" />
+
+              <polygon points="215,108 206,103 206,113" className="arrow" />
+              <polygon points="425,108 416,103 416,113" className="arrow" />
+              <polygon points="595,108 586,103 586,113" className="arrow" />
+              <polygon points="805,108 796,103 796,113" className="arrow" />
+
+              <line x1="495" y1="146" x2="495" y2="185" className="token-line" />
+              <rect x="410" y="185" width="170" height="28" className="token-box" />
+              <text x="495" y="204" textAnchor="middle" className="token-label">
+                理解証明トークン
+              </text>
+            </svg>
+          </div>
+          <ol className="flow">
+            <li>実装者が差分を取得し、クイズを生成する</li>
+            <li>サーバが回答を評価し、理解証明トークンを発行する</li>
+            <li>GitHub ActionがPR時に証明と差分を検証する</li>
+            <li>条件を満たす場合のみ、リポジトリでmergeを許可する</li>
+          </ol>
+        </section>
+
+        <section id="adoption" className="section">
+          <h2>導入</h2>
+          <div className="list-grid two-col">
+            <article>
+              <h3>最小ステップ</h3>
+              <ol>
+                <li>VSCode拡張を導入し、サーバURLと利用者IDを設定する</li>
+                <li>サーバをデプロイし、必要な変数とシークレットを設定する</li>
+                <li>GitHub ActionをPRワークフローに追加する</li>
+                <li>Required Checkに検証ジョブを登録する</li>
+              </ol>
+            </article>
+            <article>
+              <h3>前提条件</h3>
+              <ul>
+                <li>リポジトリにPR運用とブランチ保護が設定されていること</li>
+                <li>サーバ側の署名鍵と検証情報が正しく管理されていること</li>
+                <li>チームが「理解確認を必須にする」運用方針を持つこと</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section id="about" className="section">
+          <h2>BANSOUについて</h2>
+          <p>
+            BANSOUは、コード生成を加速するためのツールではありません。
+            生成された変更を読み、理解を確認し、その確認結果をマージ制御に接続するための仕組みです。
+          </p>
+          <p>
+            ここで扱う「理解」とは、変更内容を説明できること、影響範囲を把握できること、
+            そして不明点を明確にできることです。BANSOUはこの確認を個人判断に任せず、
+            チームの運用として扱える形にします。
+          </p>
+        </section>
       </main>
     </div>
-  );
-}
-
-function OverviewPage() {
-  return (
-    <section className="section">
-      <section className="hero">
-        <div className="hero-main">
-          <p className="eyebrow">理解確認を前提としたマージ判定</p>
-          <h1>変更内容を説明可能な状態で、開発を前進させる。</h1>
-          <p className="hero-copy">
-            BANSOUは、差分理解クイズとPRゲートを接続し、
-            変更理解の確認を開発フローに組み込みます。
-          </p>
-          <div className="hero-actions">
-            <a href={toHash('system')} className="hero-btn primary">
-              仕組みを見る
-            </a>
-            <a href={toHash('adoption')} className="hero-btn">
-              導入手順を見る
-            </a>
-          </div>
-        </div>
-        <div className="hero-side" aria-hidden="true">
-          <div className="hero-chip">
-            <span>流れ</span>
-            <strong>クイズ実施 → 合格判定 → ゲート検証</strong>
-          </div>
-          <div className="hero-chip">
-            <span>運用</span>
-            <strong>サーバー台帳で証明を管理</strong>
-          </div>
-          <div className="hero-chip">
-            <span>対象</span>
-            <strong>チーム開発の継続運用</strong>
-          </div>
-        </div>
-      </section>
-
-      <header className="section-head">
-        <span>01</span>
-        <h2>概要</h2>
-      </header>
-      <p>
-        生成AI活用で実装速度は向上しました。一方で、変更意図や影響範囲の共有不足が課題です。
-        BANSOUは理解確認をPR判定と接続し、品質と保守性の維持を支援します。
-      </p>
-      <div className="cards three">
-        <article className="card">
-          <h3>問題</h3>
-          <ul>
-            <li>未理解の変更が本番へ入りやすい</li>
-            <li>レビュー観点が属人化しやすい</li>
-            <li>保守時に変更意図を追いにくい</li>
-          </ul>
-        </article>
-        <article className="card">
-          <h3>対応方針</h3>
-          <ul>
-            <li>差分単位の理解クイズ</li>
-            <li>合格証明のサーバー管理</li>
-            <li>PR時の自動判定ゲート</li>
-          </ul>
-        </article>
-        <article className="card">
-          <h3>期待効果</h3>
-          <ul>
-            <li>説明可能性の向上</li>
-            <li>レビュー品質の平準化</li>
-            <li>運用時の理解コスト低減</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-  );
-}
-
-function SystemPage() {
-  return (
-    <section className="section">
-      <header className="section-head">
-        <span>02</span>
-        <h2>システム</h2>
-      </header>
-      <p>拡張機能・サーバー・GitHub Actionの3要素で構成されます。</p>
-      <div className="cards three">
-        <article className="card">
-          <h3>VSCode拡張</h3>
-          <p>差分取得、クイズ表示、回答送信を担当。</p>
-        </article>
-        <article className="card">
-          <h3>BANSOU Server</h3>
-          <p>クイズ生成、採点、証明発行、台帳保存、判定APIを担当。</p>
-        </article>
-        <article className="card">
-          <h3>GitHub Action</h3>
-          <p>PR差分と証明を照合し、マージ可否を判定。</p>
-        </article>
-      </div>
-      <div className="diagram">
-        <div className="node">実装者・レビュワー</div>
-        <div className="node">VSCode拡張</div>
-        <div className="node">サーバー</div>
-        <div className="node">GitHub Action</div>
-        <div className="node">PR / Merge Gate</div>
-      </div>
-      <article className="flow">
-        <h3>処理フロー</h3>
-        <ol>
-          <li>差分からクイズを生成</li>
-          <li>サーバーで採点</li>
-          <li>合格結果を証明として保存</li>
-          <li>PR時に証明を検証</li>
-          <li>条件充足時のみマージ可能</li>
-        </ol>
-      </article>
-    </section>
-  );
-}
-
-function AdoptionPage() {
-  return (
-    <section className="section">
-      <header className="section-head">
-        <span>03</span>
-        <h2>導入</h2>
-      </header>
-      <p>最小構成での導入手順です。検証後に必須化できます。</p>
-      <article className="card">
-        <h3>導入ステップ</h3>
-        <ol>
-          <li>サーバーをデプロイし、必要な変数・シークレットを設定する</li>
-          <li>GitHub ActionをPRワークフローへ追加する</li>
-          <li>拡張機能でサーバーURLと利用者ID（sub）を設定する</li>
-          <li>Required Checkに検証ジョブを登録する</li>
-        </ol>
-      </article>
-      <article className="card">
-        <h3>公開URL</h3>
-        <ul>
-          <li>
-            VSCode Marketplace:{' '}
-            <a
-              href="https://marketplace.visualstudio.com/items?itemName=utsugi0101.bansou"
-              target="_blank"
-              rel="noreferrer"
-            >
-              utsugi0101.bansou
-            </a>
-          </li>
-        </ul>
-      </article>
-    </section>
-  );
-}
-
-function AboutPage() {
-  return (
-    <section className="section">
-      <header className="section-head">
-        <span>04</span>
-        <h2>BANSOUについて</h2>
-      </header>
-      <p>
-        BANSOUは生成AI利用を止める仕組みではなく、
-        生成された変更を理解可能な状態で運用するための基盤です。
-      </p>
-      <div className="cards two">
-        <article className="card">
-          <h3>SecHack365</h3>
-          <p>ここにSecHack365での取り組み背景、課題設定、開発意図を記載できます。</p>
-        </article>
-        <article className="card">
-          <h3>開発者プロフィール</h3>
-          <p>ここに開発者の経歴、問題意識、今後の展望を記載できます。</p>
-        </article>
-      </div>
-      <blockquote className="concept">
-        BANSOUはコードを書くためのツールではない。理解をCIに組み込む仕組みである。
-      </blockquote>
-    </section>
   );
 }
 
