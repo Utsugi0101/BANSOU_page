@@ -1,36 +1,74 @@
+import { useEffect, useState } from 'react';
 import './App.css';
 
+type Route = 'overview' | 'system' | 'adoption' | 'about';
+
+const routes: Array<{ id: Route; label: string }> = [
+  { id: 'overview', label: '概要' },
+  { id: 'system', label: 'システム' },
+  { id: 'adoption', label: '導入' },
+  { id: 'about', label: 'BANSOUについて' },
+];
+
+function parseRoute(hash: string): Route {
+  const normalized = hash.replace(/^#\/?/, '').replace(/^#/, '');
+  if (normalized === 'system') return 'system';
+  if (normalized === 'adoption') return 'adoption';
+  if (normalized === 'about') return 'about';
+  return 'overview';
+}
+
+function toHash(route: Route): string {
+  return `#/${route}`;
+}
+
 function App() {
+  const [route, setRoute] = useState<Route>(() => parseRoute(window.location.hash));
+
+  useEffect(() => {
+    const onHashChange = () => setRoute(parseRoute(window.location.hash));
+    window.addEventListener('hashchange', onHashChange);
+    if (!window.location.hash) {
+      window.location.hash = toHash('overview');
+    }
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
+
   return (
     <div className="page">
       <header className="topbar">
         <div className="wrap topbar-inner">
-          <a href="#top" className="brand">
+          <a href={toHash('overview')} className="brand">
             BANSOU
           </a>
           <nav className="nav" aria-label="ページ内ナビゲーション">
-            <a href="#overview">概要</a>
-            <a href="#system">システム</a>
-            <a href="#adoption">導入</a>
-            <a href="#about">BANSOUについて</a>
+            {routes.map((item) => (
+              <a
+                key={item.id}
+                href={toHash(item.id)}
+                className={item.id === route ? 'active' : ''}
+              >
+                {item.label}
+              </a>
+            ))}
           </nav>
         </div>
       </header>
 
-      <main id="top" className="wrap main">
-        <section className="hero section">
-          <p className="hero-lead">理解を伴う開発のために。</p>
-          <h1>理解を確認し、確認されない限りマージしない。</h1>
-          <p>
-            BANSOUは、生成されたコードを読み、理解を確認し、
-            その結果をPRのマージ条件に接続するための仕組みです。
-          </p>
-          <a className="hero-button" href="#system">
-            仕組みを見る
-          </a>
-        </section>
-
-        <section id="overview" className="section">
+      <main className="wrap main">
+        {route === 'overview' && (
+          <section id="overview" className="section">
+            <section className="hero">
+              <p className="hero-lead">理解を伴う開発のために。</p>
+              <h1>理解を確認し、確認されない限りマージしない。</h1>
+              <p>
+                BANSOUは、生成されたコードを読み、理解を確認し、
+                その結果をPRのマージ条件に接続するための仕組みです。
+              </p>
+              <a className="hero-button" href={toHash('system')}>
+                仕組みを見る
+              </a>
+            </section>
           <h2>概要</h2>
           <p>
             生成AIを使った開発では、実装速度が上がる一方で、変更内容の理解が不足したままPRが進む課題があります。
@@ -62,9 +100,11 @@ function App() {
               </ul>
             </article>
           </div>
-        </section>
+          </section>
+        )}
 
-        <section id="system" className="section">
+        {route === 'system' && (
+          <section id="system" className="section">
           <h2>システム</h2>
           <p>
             構成要素は、実装者、VSCode拡張、サーバ、GitHub Action、リポジトリです。
@@ -120,9 +160,11 @@ function App() {
             <li>GitHub ActionがPR時に証明と差分を検証する</li>
             <li>条件を満たす場合のみ、リポジトリでmergeを許可する</li>
           </ol>
-        </section>
+          </section>
+        )}
 
-        <section id="adoption" className="section">
+        {route === 'adoption' && (
+          <section id="adoption" className="section">
           <h2>導入</h2>
           <div className="list-grid two-col">
             <article>
@@ -143,9 +185,11 @@ function App() {
               </ul>
             </article>
           </div>
-        </section>
+          </section>
+        )}
 
-        <section id="about" className="section">
+        {route === 'about' && (
+          <section id="about" className="section">
           <h2>BANSOUについて</h2>
           <p>
             BANSOUは、コード生成を加速するためのツールではありません。
@@ -156,7 +200,8 @@ function App() {
             そして不明点を明確にできることです。BANSOUはこの確認を個人判断に任せず、
             チームの運用として扱える形にします。
           </p>
-        </section>
+          </section>
+        )}
       </main>
     </div>
   );

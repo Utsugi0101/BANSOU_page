@@ -70,6 +70,11 @@ body {
   border-bottom-color: var(--text);
 }
 
+.nav a.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
 .main {
   padding-top: 26px;
   padding-bottom: 36px;
@@ -78,6 +83,7 @@ body {
 .section {
   padding: 30px 0;
   border-bottom: 1px solid var(--text);
+  animation: fade-in 0.18s ease;
 }
 
 .hero {
@@ -228,5 +234,14 @@ svg {
     flex-direction: column;
     align-items: flex-start;
     padding: 10px 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
