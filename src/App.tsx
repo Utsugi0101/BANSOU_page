@@ -59,12 +59,28 @@ function App() {
 
       <main className="content">
         <section className="hero">
-          <p className="eyebrow">UNDERSTANDING BEFORE MERGE</p>
-          <h1>理解していないコードを、本番に入れない。</h1>
-          <p>
-            BANSOUは、差分理解クイズとPRゲートを接続して、
-            チームの開発品質を守るための仕組みです。
-          </p>
+          <div className="hero-main">
+            <p className="eyebrow">UNDERSTANDING BEFORE MERGE</p>
+            <h1>理解を通った変更だけを、マージする。</h1>
+            <p className="hero-copy">
+              BANSOUは、差分理解クイズとPRゲートを接続して、
+              生成AI時代のチーム開発に必要な「理解責任」を開発フローへ戻します。
+            </p>
+          </div>
+          <div className="hero-side" aria-hidden="true">
+            <div className="hero-chip">
+              <span>FLOW</span>
+              <strong>Quiz → Pass → Gate</strong>
+            </div>
+            <div className="hero-chip">
+              <span>MODE</span>
+              <strong>Server Ledger</strong>
+            </div>
+            <div className="hero-chip">
+              <span>TARGET</span>
+              <strong>Team Development</strong>
+            </div>
+          </div>
         </section>
 
         {route === 'overview' && <OverviewPage />}
@@ -79,7 +95,10 @@ function App() {
 function OverviewPage() {
   return (
     <section className="section">
-      <h2>概要</h2>
+      <header className="section-head">
+        <span>01</span>
+        <h2>概要</h2>
+      </header>
       <p>
         生成AI時代では、実装スピードの向上と引き換えに「未理解のままの実装」が増えます。
         BANSOUは、レビュー前に理解を確認し、理解の証明をCIに組み込むことで、
@@ -118,7 +137,10 @@ function OverviewPage() {
 function SystemPage() {
   return (
     <section className="section">
-      <h2>システム</h2>
+      <header className="section-head">
+        <span>02</span>
+        <h2>システム</h2>
+      </header>
       <p>BANSOUは3つのコンポーネントで構成されます。</p>
       <div className="cards three">
         <article className="card">
@@ -133,6 +155,13 @@ function SystemPage() {
           <h3>GitHub Action</h3>
           <p>PR差分とledgerの整合を確認し、マージ可否を判定。</p>
         </article>
+      </div>
+      <div className="diagram">
+        <div className="node">ユーザー</div>
+        <div className="node">VSCode拡張</div>
+        <div className="node">サーバー</div>
+        <div className="node">GitHub Action</div>
+        <div className="node">PR / Merge Gate</div>
       </div>
       <article className="flow">
         <h3>処理フロー</h3>
@@ -151,7 +180,10 @@ function SystemPage() {
 function AdoptionPage() {
   return (
     <section className="section">
-      <h2>導入</h2>
+      <header className="section-head">
+        <span>03</span>
+        <h2>導入</h2>
+      </header>
       <p>最小の導入手順です。小さく始めて、徐々に必須化できます。</p>
       <article className="card">
         <h3>導入ステップ</h3>
@@ -184,7 +216,10 @@ function AdoptionPage() {
 function AboutPage() {
   return (
     <section className="section">
-      <h2>BANSOUについて</h2>
+      <header className="section-head">
+        <span>04</span>
+        <h2>BANSOUについて</h2>
+      </header>
       <div className="cards two">
         <article className="card">
           <h3>SecHack365</h3>
