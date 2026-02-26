@@ -184,6 +184,44 @@ function App() {
             <li>GitHub ActionがPR時に証明と差分を検証する</li>
             <li>条件を満たす場合のみ、mergeを許可する</li>
           </ol>
+
+          <div className="list-grid two-col">
+            <article>
+              <h3>コンポーネント責務</h3>
+              <ul>
+                <li>VSCode拡張: 差分取得、クイズ表示、回答送信、学習導線</li>
+                <li>サーバ: クイズ生成、採点、JWT署名、ledger保存、gate評価</li>
+                <li>GitHub Action: PR差分取得、gate照会、Required Check結果出力</li>
+              </ul>
+            </article>
+            <article>
+              <h3>信頼境界</h3>
+              <ul>
+                <li>クライアントは非信頼。採点結果はサーバ側を正とする</li>
+                <li>署名鍵はサーバのみ保持し、検証側はJWKSを参照する</li>
+                <li>merge判定はPRコンテキスト（repo/commit/sub）との整合で行う</li>
+              </ul>
+            </article>
+          </div>
+
+          <div className="list-grid two-col">
+            <article>
+              <h3>運用モード</h3>
+              <ul>
+                <li>server ledger mode: 証明をサーバ台帳で管理し、PRにJWTを置かない</li>
+                <li>repository mode: attestationファイルをリポジトリに保持する</li>
+                <li>現在の推奨: gate_urlを用いたserver ledger mode</li>
+              </ul>
+            </article>
+            <article>
+              <h3>検証条件（代表）</h3>
+              <ul>
+                <li>必要な quiz_id の証明が存在すること</li>
+                <li>変更ファイルに対応する証明が揃っていること</li>
+                <li>トークン/台帳情報がPR文脈と一致すること</li>
+              </ul>
+            </article>
+          </div>
         </section>
         )}
 
@@ -206,6 +244,48 @@ function App() {
                 <li>リポジトリにPR運用とブランチ保護が設定されていること</li>
                 <li>サーバ側の署名鍵と検証情報が正しく管理されていること</li>
                 <li>チームが「理解確認を必須にする」運用方針を持つこと</li>
+              </ul>
+            </article>
+          </div>
+
+          <div className="list-grid two-col">
+            <article>
+              <h3>設定項目（最小）</h3>
+              <ul>
+                <li>拡張: `attestationServerUrl`, `attestationSubject`</li>
+                <li>Action: `issuer`, `jwks_url`, `required_quiz_id`, `gate_url`</li>
+                <li>Secrets: `BANSOU_GATE_API_TOKEN`, サーバ秘密鍵関連</li>
+                <li>Branch protection: `Verify BANSOU Token` を必須チェック化</li>
+              </ul>
+            </article>
+            <article>
+              <h3>推奨導入順</h3>
+              <ol>
+                <li>まず検証リポジトリでE2Eを通し、失敗パターンを把握する</li>
+                <li>次に本番候補リポジトリで任意運用（警告扱い）を試す</li>
+                <li>運用が安定したらRequired Checkを有効化する</li>
+                <li>対象範囲（重要ファイルのみ等）を段階的に拡大する</li>
+              </ol>
+            </article>
+          </div>
+
+          <div className="list-grid two-col">
+            <article>
+              <h3>よくある失敗</h3>
+              <ul>
+                <li>クイズ合格前にPRを更新し、証明が不足する</li>
+                <li>sub（利用者ID）不一致で証明が無効扱いになる</li>
+                <li>サーバ未デプロイで `/gate/health` が404になる</li>
+                <li>トークン不一致で `gate/evaluate` が401になる</li>
+              </ul>
+            </article>
+            <article>
+              <h3>運用チェック</h3>
+              <ul>
+                <li>サーバ: `/gate/health` が `ok:true` を返すこと</li>
+                <li>ローカル: `npm run e2e:check` が `ok:true` になること</li>
+                <li>GitHub: Actionジョブが緑で完了すること</li>
+                <li>例外対応: バイパス運用時は理由とログを残すこと</li>
               </ul>
             </article>
           </div>
