@@ -131,6 +131,10 @@
   line-height: 1.75;
 }
 
+.feature-card a {
+  color: #0369a1;
+}
+
 .feature-card ul,
 .feature-card ol {
   margin: 0;

@@ -138,6 +138,17 @@ jwks_url: https://bansou-server.example.workers.dev/.well-known/jwks.json
 gate_url: https://bansou-server.example.workers.dev`}</code>
         </pre>
       </article>
+      <article className="feature-card full">
+        <h2>公開URL</h2>
+        <ul>
+          <li>
+            VSCode Marketplace:{' '}
+            <a href="https://marketplace.visualstudio.com/items?itemName=utsugi0101.bansou" target="_blank" rel="noreferrer">
+              https://marketplace.visualstudio.com/items?itemName=utsugi0101.bansou
+            </a>
+          </li>
+        </ul>
+      </article>
     </section>
   );
 }
