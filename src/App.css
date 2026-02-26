@@ -104,7 +104,6 @@
   font-size: 0.72rem;
   letter-spacing: 0.08em;
   color: #64748b;
-  text-transform: uppercase;
 }
 
 .hero-chip strong {
@@ -159,6 +158,7 @@
   font-size: 0.8rem;
   font-weight: 800;
   letter-spacing: 0.1em;
+  min-width: 2.4em;
 }
 
 .section h2 {
@@ -195,14 +195,14 @@
 
 .card h3 {
   margin: 0 0 10px;
-  font-size: 1.02rem;
+  font-size: 1.03rem;
   color: #1e293b;
 }
 
 .card p,
 .card li {
   color: #334155;
-  line-height: 1.7;
+  line-height: 1.78;
 }
 
 .card ul,
@@ -235,11 +235,12 @@
 
 .concept {
   margin: 14px 0 0;
-  padding: 12px 14px;
+  padding: 14px 16px;
   border-left: 4px solid #f59e0b;
   background: #fff8e6;
   color: #78350f;
   border-radius: 8px;
+  line-height: 1.8;
 }
 
 .diagram {

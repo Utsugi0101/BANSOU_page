@@ -60,25 +60,25 @@ function App() {
       <main className="content">
         <section className="hero">
           <div className="hero-main">
-            <p className="eyebrow">UNDERSTANDING BEFORE MERGE</p>
-            <h1>理解を通った変更だけを、マージする。</h1>
+            <p className="eyebrow">理解を確認してからマージする</p>
+            <h1>未理解のまま進めない、開発フローへ。</h1>
             <p className="hero-copy">
               BANSOUは、差分理解クイズとPRゲートを接続して、
-              生成AI時代のチーム開発に必要な「理解責任」を開発フローへ戻します。
+              生成AIを使う開発でも「その変更を説明できるか」を確かめるための仕組みです。
             </p>
           </div>
           <div className="hero-side" aria-hidden="true">
             <div className="hero-chip">
-              <span>FLOW</span>
-              <strong>Quiz → Pass → Gate</strong>
+              <span>流れ</span>
+              <strong>クイズ → 合格 → ゲート通過</strong>
             </div>
             <div className="hero-chip">
-              <span>MODE</span>
-              <strong>Server Ledger</strong>
+              <span>運用</span>
+              <strong>サーバー台帳で証明を管理</strong>
             </div>
             <div className="hero-chip">
-              <span>TARGET</span>
-              <strong>Team Development</strong>
+              <span>対象</span>
+              <strong>チーム開発の継続運用</strong>
             </div>
           </div>
         </section>
@@ -100,33 +100,33 @@ function OverviewPage() {
         <h2>概要</h2>
       </header>
       <p>
-        生成AI時代では、実装スピードの向上と引き換えに「未理解のままの実装」が増えます。
-        BANSOUは、レビュー前に理解を確認し、理解の証明をCIに組み込むことで、
-        品質低下とレビュー負荷の偏りを減らします。
+        生成AIの活用で実装速度は上がりましたが、変更の背景や挙動を十分に説明できないまま
+        開発が進む場面も増えています。BANSOUは、レビュー前に理解確認を行い、
+        その結果をPRの判定に結びつけることで、品質と運用の安定を狙います。
       </p>
       <div className="cards three">
         <article className="card">
           <h3>問題</h3>
           <ul>
-            <li>未理解コードの本番流入</li>
-            <li>セキュリティリスクの見落とし</li>
-            <li>保守運用の属人化</li>
+            <li>未理解の変更が本番へ入りやすい</li>
+            <li>レビューの指摘が属人的になりやすい</li>
+            <li>保守時に変更意図を追いにくくなる</li>
           </ul>
         </article>
         <article className="card">
-          <h3>解決</h3>
+          <h3>対応</h3>
           <ul>
             <li>差分単位の理解クイズ</li>
             <li>合格証明のサーバー管理</li>
-            <li>PR時の自動ゲート判定</li>
+            <li>PR時の自動判定ゲート</li>
           </ul>
         </article>
         <article className="card">
-          <h3>価値</h3>
+          <h3>得られること</h3>
           <ul>
-            <li>レビューの質を上げる</li>
-            <li>チーム全体の理解を可視化</li>
-            <li>説明可能な開発プロセス</li>
+            <li>変更内容の説明可能性が上がる</li>
+            <li>レビュー観点が揃いやすくなる</li>
+            <li>運用時の理解コストを下げられる</li>
           </ul>
         </article>
       </div>
@@ -141,23 +141,23 @@ function SystemPage() {
         <span>02</span>
         <h2>システム</h2>
       </header>
-      <p>BANSOUは3つのコンポーネントで構成されます。</p>
+      <p>BANSOUは、拡張機能・サーバー・GitHub Actionの3要素で動作します。</p>
       <div className="cards three">
         <article className="card">
-          <h3>VSCode Extension</h3>
-          <p>差分抽出、クイズ表示、回答送信を担当。</p>
+          <h3>VSCode拡張</h3>
+          <p>差分の取得、クイズ表示、回答送信を担当します。</p>
         </article>
         <article className="card">
           <h3>BANSOU Server</h3>
-          <p>クイズ生成、採点、証明発行、ledger保存、gate判定を担当。</p>
+          <p>クイズ生成・採点・証明発行・台帳保存・判定APIを担当します。</p>
         </article>
         <article className="card">
           <h3>GitHub Action</h3>
-          <p>PR差分とledgerの整合を確認し、マージ可否を判定。</p>
+          <p>PR差分と証明の整合を確認し、マージ可否を判定します。</p>
         </article>
       </div>
       <div className="diagram">
-        <div className="node">ユーザー</div>
+        <div className="node">実装者・レビュワー</div>
         <div className="node">VSCode拡張</div>
         <div className="node">サーバー</div>
         <div className="node">GitHub Action</div>
@@ -166,11 +166,11 @@ function SystemPage() {
       <article className="flow">
         <h3>処理フロー</h3>
         <ol>
-          <li>差分検知</li>
-          <li>クイズ生成</li>
-          <li>回答と採点</li>
-          <li>証明保存</li>
-          <li>PRゲート判定</li>
+          <li>差分を取り込み、クイズを生成する</li>
+          <li>回答をサーバーで採点する</li>
+          <li>合格結果を証明として保存する</li>
+          <li>PR時に証明の有無を検証する</li>
+          <li>条件を満たした変更のみマージする</li>
         </ol>
       </article>
     </section>
@@ -184,14 +184,14 @@ function AdoptionPage() {
         <span>03</span>
         <h2>導入</h2>
       </header>
-      <p>最小の導入手順です。小さく始めて、徐々に必須化できます。</p>
+      <p>最小構成で始められる手順です。まず検証し、運用に合わせて必須化できます。</p>
       <article className="card">
         <h3>導入ステップ</h3>
         <ol>
-          <li>Server をデプロイし、ISSUER/JWKS/GATE TOKEN を設定</li>
-          <li>Action をワークフローへ追加</li>
-          <li>拡張機能で Server URL と user(sub) を設定</li>
-          <li>Required Check に `Verify BANSOU Token` を設定</li>
+          <li>サーバーをデプロイし、必要な変数・シークレットを設定する</li>
+          <li>GitHub ActionをPRワークフローへ追加する</li>
+          <li>拡張機能でサーバーURLと利用者IDを設定する</li>
+          <li>Required Checkに検証ジョブを登録する</li>
         </ol>
       </article>
       <article className="card">
@@ -220,6 +220,10 @@ function AboutPage() {
         <span>04</span>
         <h2>BANSOUについて</h2>
       </header>
+      <p>
+        BANSOUは「生成を止める」ための仕組みではなく、
+        生成した変更を理解し、説明できる状態で運用するための仕組みです。
+      </p>
       <div className="cards two">
         <article className="card">
           <h3>SecHack365</h3>
