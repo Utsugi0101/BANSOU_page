@@ -38,16 +38,13 @@ function App() {
     <div className="page">
       <header className="topbar">
         <div className="wrap topbar-inner">
-          <a href={toHash('overview')} className="brand">
-            BANSOU
+          <a href={toHash('overview')} className="brand" aria-label="BANSOU トップへ">
+            <img src="/アイコン.png" alt="BANSOU ロゴ" className="brand-logo" />
+            <span>BANSOU</span>
           </a>
           <nav className="nav" aria-label="ページ内ナビゲーション">
             {routes.map((item) => (
-              <a
-                key={item.id}
-                href={toHash(item.id)}
-                className={item.id === route ? 'active' : ''}
-              >
+              <a key={item.id} href={toHash(item.id)} className={item.id === route ? 'active' : ''}>
                 {item.label}
               </a>
             ))}
@@ -58,273 +55,264 @@ function App() {
       <main className="wrap main">
         {route === 'overview' && (
           <section id="overview" className="section">
-            <section className="hero">
-              <p className="hero-lead">理解を置いていかない開発のために。</p>
-              <h1>理解を確認し、確認されない限りマージしない。</h1>
-              <p>
-                BANSOUは、開発の加速に対して置いていかれやすい「理解」を、
-                支援・測定・確認の流れでチーム開発に戻すための仕組みです。
+            <div className="hero-block">
+              <p className="eyebrow">理解を伴う開発</p>
+              <h1>変更内容を説明可能な状態で、開発を前進させる。</h1>
+              <p className="hero-copy">
+                BANSOUは、生成されたコードを読むこと、理解を確認すること、
+                確認されない限りマージしないことを、開発フローとして扱うための仕組みです。
               </p>
-              <a className="hero-button" href={toHash('system')}>
+              <a className="primary-btn" href={toHash('system')}>
                 仕組みを見る
               </a>
-            </section>
-          <h2>概要</h2>
-          <p>
-            生成AIを使った開発では、実装速度が上がる一方で、変更内容の理解が不足したままPRが進む課題があります。
-            BANSOUはこの課題に対して、理解確認を運用フローに組み込みます。
-          </p>
-          <p>
-            生成コードには脆弱性が含まれる場合があるという報告もあり、
-            「速く作れること」と「安全に運用できること」を分けて扱う必要があります。
-          </p>
-          <div className="list-grid">
-            <article>
-              <h3>影響（技術・組織・心理）</h3>
-              <ul>
-                <li>技術: 脆弱性や障害要因を見落としやすい</li>
-                <li>組織: レビュワー依存と属人化が進みやすい</li>
-                <li>心理: 制御できない感覚が負担になりやすい</li>
-              </ul>
-            </article>
-            <article>
-              <h3>BANSOUの役割</h3>
-              <ul>
-                <li>理解支援: 差分読解と関連ドキュメント参照を促す</li>
-                <li>理解測定: クイズ回答をサーバ側で評価する</li>
-                <li>理解確認: 結果をPRの判定条件に接続する</li>
-              </ul>
-            </article>
-            <article>
-              <h3>制御する対象</h3>
-              <ul>
-                <li>理解確認が行われたか</li>
-                <li>対象差分に対応する証明があるか</li>
-                <li>条件を満たさない変更をマージさせないこと</li>
-              </ul>
-            </article>
-          </div>
+            </div>
 
-          <div className="list-grid two-col">
-            <article>
-              <h3>チームへの影響（実装者・レビュアー）</h3>
-              <ul>
-                <li>実装者: 説明可能な状態になるまでコードを読む動機が生まれる</li>
-                <li>実装者: クイズ形式により、確認の心理的負担を下げやすい</li>
-                <li>レビュアー: 理解確認の反復を減らし、設計品質に集中しやすくなる</li>
-              </ul>
+            <div className="status-strip" aria-label="概要サマリー">
+              <p>
+                <strong>対象</strong>
+                生成AIを活用するチーム開発
+              </p>
+              <p>
+                <strong>制御</strong>
+                差分ごとの理解確認とマージ条件
+              </p>
+              <p>
+                <strong>目的</strong>
+                未理解コードの本番流入を抑制
+              </p>
+            </div>
+
+            <h2>概要</h2>
+            <div className="grid two">
+              <article className="panel">
+                <h3>課題</h3>
+                <ul>
+                  <li>実装速度が上がり、理解の確認が後回しになりやすい</li>
+                  <li>レビュワーの負荷が上がり、確認作業が属人化しやすい</li>
+                  <li>説明しづらい変更がそのまま本番に入るリスクがある</li>
+                </ul>
+              </article>
+              <article className="panel">
+                <h3>BANSOUの役割</h3>
+                <ul>
+                  <li>差分からクイズを作成し、理解確認を実行する</li>
+                  <li>合格結果を理解証明として記録・照会可能にする</li>
+                  <li>証明が不足するPRをGitHub Actionsで停止する</li>
+                </ul>
+              </article>
+            </div>
+
+            <article className="panel table-panel">
+              <h3>制御する範囲</h3>
+              <dl className="definition-list">
+                <div>
+                  <dt>できること</dt>
+                  <dd>理解確認をPR判定に接続し、運用として継続すること</dd>
+                </div>
+                <div>
+                  <dt>前提</dt>
+                  <dd>サーバ設定、Action設定、チームの運用合意があること</dd>
+                </div>
+                <div>
+                  <dt>限界</dt>
+                  <dd>クイズは理解の補助であり、設計判断の代替にはならないこと</dd>
+                </div>
+              </dl>
             </article>
-            <article>
-              <h3>チームへの影響（組織・システム）</h3>
-              <ul>
-                <li>組織: 「理解」を評価可能な運用指標として扱える</li>
-                <li>組織: 速度優先で理解が後回しになる圧力を抑制しやすい</li>
-                <li>システム: 未理解コードの本番統合リスクを低減できる</li>
-              </ul>
-            </article>
-          </div>
           </section>
         )}
 
         {route === 'system' && (
           <section id="system" className="section">
-          <h2>システム</h2>
-          <p>
-            構成要素は、実装者、VSCode拡張、サーバ、GitHub Action、リポジトリです。
-            理解証明トークンを介して、merge制御を行います。
-          </p>
-          <div className="diagram-box">
-            <svg viewBox="0 0 980 220" role="img" aria-label="BANSOUのシステム構成図">
-              <rect x="20" y="80" width="160" height="56" className="box" />
-              <text x="100" y="112" textAnchor="middle" className="label">
-                実装者
-              </text>
+            <h2>システム</h2>
+            <p className="section-copy">
+              BANSOUは、VSCode拡張・サーバ・GitHub Actionを連携させ、
+              「理解確認済みの差分のみをマージ可能」にする構成です。
+            </p>
 
-              <rect x="220" y="80" width="170" height="56" className="box" />
-              <text x="305" y="112" textAnchor="middle" className="label">
-                VSCode拡張
-              </text>
+            <div className="diagram-box">
+              <svg viewBox="0 0 1040 280" role="img" aria-label="BANSOUシステム構成図">
+                <rect x="24" y="38" width="160" height="60" className="box" />
+                <text x="104" y="74" textAnchor="middle" className="label">実装者</text>
 
-              <rect x="430" y="80" width="130" height="56" className="box" />
-              <text x="495" y="112" textAnchor="middle" className="label">
-                サーバ
-              </text>
+                <rect x="224" y="38" width="186" height="60" className="box" />
+                <text x="317" y="74" textAnchor="middle" className="label">VSCode拡張</text>
 
-              <rect x="600" y="80" width="170" height="56" className="box" />
-              <text x="685" y="112" textAnchor="middle" className="label">
-                GitHub Action
-              </text>
+                <rect x="450" y="38" width="148" height="60" className="box" />
+                <text x="524" y="74" textAnchor="middle" className="label">サーバ</text>
 
-              <rect x="810" y="80" width="150" height="56" className="box" />
-              <text x="885" y="112" textAnchor="middle" className="label">
-                リポジトリ
-              </text>
+                <rect x="638" y="38" width="184" height="60" className="box" />
+                <text x="730" y="74" textAnchor="middle" className="label">GitHub Action</text>
 
-              <line x1="180" y1="108" x2="220" y2="108" className="line" />
-              <line x1="390" y1="108" x2="430" y2="108" className="line" />
-              <line x1="560" y1="108" x2="600" y2="108" className="line" />
-              <line x1="770" y1="108" x2="810" y2="108" className="line" />
+                <rect x="862" y="38" width="154" height="60" className="box" />
+                <text x="939" y="74" textAnchor="middle" className="label">リポジトリ</text>
 
-              <polygon points="215,108 206,103 206,113" className="arrow" />
-              <polygon points="425,108 416,103 416,113" className="arrow" />
-              <polygon points="595,108 586,103 586,113" className="arrow" />
-              <polygon points="805,108 796,103 796,113" className="arrow" />
+                <line x1="184" y1="68" x2="224" y2="68" className="line" />
+                <line x1="410" y1="68" x2="450" y2="68" className="line" />
+                <line x1="598" y1="68" x2="638" y2="68" className="line" />
+                <line x1="822" y1="68" x2="862" y2="68" className="line" />
 
-              <line x1="495" y1="146" x2="495" y2="185" className="token-line" />
-              <rect x="410" y="185" width="170" height="28" className="token-box" />
-              <text x="495" y="204" textAnchor="middle" className="token-label">
-                理解証明トークン
-              </text>
-            </svg>
-          </div>
-          <ol className="flow">
-            <li>生成AIで実装する</li>
-            <li>差分に対する理解確認クイズを実施する</li>
-            <li>サーバが評価し、理解証明トークンを発行する</li>
-            <li>GitHub ActionがPR時に証明と差分を検証する</li>
-            <li>条件を満たす場合のみ、mergeを許可する</li>
-          </ol>
+                <polygon points="219,68 210,63 210,73" className="arrow" />
+                <polygon points="445,68 436,63 436,73" className="arrow" />
+                <polygon points="633,68 624,63 624,73" className="arrow" />
+                <polygon points="857,68 848,63 848,73" className="arrow" />
 
-          <div className="list-grid two-col">
-            <article>
-              <h3>コンポーネント責務</h3>
-              <ul>
-                <li>VSCode拡張: 差分取得、クイズ表示、回答送信、学習導線</li>
-                <li>サーバ: クイズ生成、採点、JWT署名、ledger保存、gate評価</li>
-                <li>GitHub Action: PR差分取得、gate照会、Required Check結果出力</li>
-              </ul>
+                <rect x="450" y="134" width="148" height="58" className="token-box" />
+                <text x="524" y="168" textAnchor="middle" className="token-label">理解証明台帳</text>
+
+                <line x1="524" y1="98" x2="524" y2="134" className="token-line" />
+                <line x1="598" y1="163" x2="638" y2="163" className="token-line" />
+                <polygon points="633,163 624,158 624,168" className="token-arrow" />
+
+                <rect x="862" y="134" width="154" height="58" className="box" />
+                <text x="939" y="168" textAnchor="middle" className="label">merge制御</text>
+                <line x1="822" y1="163" x2="862" y2="163" className="line" />
+                <polygon points="857,163 848,158 848,168" className="arrow" />
+              </svg>
+            </div>
+
+            <div className="grid two">
+              <article className="panel">
+                <h3>典型フロー</h3>
+                <ol>
+                  <li>PR差分をVSCode拡張で取得する</li>
+                  <li>差分単位でクイズを生成し、回答する</li>
+                  <li>サーバが採点し、理解証明を台帳に記録する</li>
+                  <li>ActionがPR情報を添えて`/gate/evaluate`を照会する</li>
+                  <li>必要差分が揃っていればチェック成功、未達なら失敗</li>
+                </ol>
+              </article>
+              <article className="panel">
+                <h3>責務分担</h3>
+                <ul>
+                  <li>拡張: 差分抽出、クイズUI、回答送信</li>
+                  <li>サーバ: 生成、採点、署名、台帳管理、ゲート判定</li>
+                  <li>Action: PR文脈の収集、判定API呼び出し、結果反映</li>
+                </ul>
+              </article>
+            </div>
+
+            <article className="panel table-panel">
+              <h3>運用上の前提と限界</h3>
+              <dl className="definition-list">
+                <div>
+                  <dt>狙い</dt>
+                  <dd>理解確認をレビュー補助ではなく必須フローとして扱う</dd>
+                </div>
+                <div>
+                  <dt>前提</dt>
+                  <dd>sub（利用者ID）、repo、commitの整合が取れていること</dd>
+                </div>
+                <div>
+                  <dt>限界</dt>
+                  <dd>クイズ品質は改善余地があり、運用で継続調整が必要</dd>
+                </div>
+              </dl>
             </article>
-            <article>
-              <h3>信頼境界</h3>
-              <ul>
-                <li>クライアントは非信頼。採点結果はサーバ側を正とする</li>
-                <li>署名鍵はサーバのみ保持し、検証側はJWKSを参照する</li>
-                <li>merge判定はPRコンテキスト（repo/commit/sub）との整合で行う</li>
-              </ul>
-            </article>
-          </div>
-
-          <div className="list-grid two-col">
-            <article>
-              <h3>運用モード</h3>
-              <ul>
-                <li>server ledger mode: 証明をサーバ台帳で管理し、PRにJWTを置かない</li>
-                <li>repository mode: attestationファイルをリポジトリに保持する</li>
-                <li>現在の推奨: gate_urlを用いたserver ledger mode</li>
-              </ul>
-            </article>
-            <article>
-              <h3>検証条件（代表）</h3>
-              <ul>
-                <li>必要な quiz_id の証明が存在すること</li>
-                <li>変更ファイルに対応する証明が揃っていること</li>
-                <li>トークン/台帳情報がPR文脈と一致すること</li>
-              </ul>
-            </article>
-          </div>
-        </section>
+          </section>
         )}
 
         {route === 'adoption' && (
           <section id="adoption" className="section">
-          <h2>導入</h2>
-          <div className="list-grid two-col">
-            <article>
-              <h3>最小ステップ</h3>
-              <ol>
-                <li>VSCode拡張を導入し、サーバURLと利用者IDを設定する</li>
-                <li>サーバをデプロイし、必要な変数とシークレットを設定する</li>
-                <li>GitHub ActionをPRワークフローに追加する</li>
-                <li>Required Checkに検証ジョブを登録する</li>
-              </ol>
-            </article>
-            <article>
-              <h3>前提条件</h3>
-              <ul>
-                <li>リポジトリにPR運用とブランチ保護が設定されていること</li>
-                <li>サーバ側の署名鍵と検証情報が正しく管理されていること</li>
-                <li>チームが「理解確認を必須にする」運用方針を持つこと</li>
-              </ul>
-            </article>
-          </div>
+            <h2>導入</h2>
+            <p className="section-copy">
+              まず検証リポジトリでE2Eを通し、動作確認後にRequired Checkを有効化します。
+            </p>
 
-          <div className="list-grid two-col">
-            <article>
-              <h3>設定項目（最小）</h3>
-              <ul>
-                <li>拡張: `attestationServerUrl`, `attestationSubject`</li>
-                <li>Action: `issuer`, `jwks_url`, `required_quiz_id`, `gate_url`</li>
-                <li>Secrets: `BANSOU_GATE_API_TOKEN`, サーバ秘密鍵関連</li>
-                <li>Branch protection: `Verify BANSOU Token` を必須チェック化</li>
-              </ul>
-            </article>
-            <article>
-              <h3>推奨導入順</h3>
-              <ol>
-                <li>まず検証リポジトリでE2Eを通し、失敗パターンを把握する</li>
-                <li>次に本番候補リポジトリで任意運用（警告扱い）を試す</li>
-                <li>運用が安定したらRequired Checkを有効化する</li>
-                <li>対象範囲（重要ファイルのみ等）を段階的に拡大する</li>
-              </ol>
-            </article>
-          </div>
+            <div className="grid two">
+              <article className="panel">
+                <h3>最短手順</h3>
+                <ol>
+                  <li>VSCode拡張を導入し、`attestationServerUrl` と `attestationSubject` を設定</li>
+                  <li>サーバをデプロイし、署名鍵・`BANSOU_GATE_API_TOKEN` を設定</li>
+                  <li>GitHub Actionsに `Utsugi0101/bansou-action@v1` を追加</li>
+                  <li>Action入力に `issuer` `jwks_url` `gate_url` `required_quiz_id` を設定</li>
+                  <li>Branch protectionで検証ジョブを必須化する</li>
+                </ol>
+              </article>
+              <article className="panel">
+                <h3>先に確認する項目</h3>
+                <ul>
+                  <li>`/gate/health` が `ok:true` を返す</li>
+                  <li>ゲートトークンで `/gate/evaluate` が200を返す</li>
+                  <li>`npm run e2e:check` で不足差分が可視化される</li>
+                  <li>除外対象ファイルの方針をチームで合意している</li>
+                </ul>
+              </article>
+            </div>
 
-          <div className="list-grid two-col">
-            <article>
-              <h3>よくある失敗</h3>
-              <ul>
-                <li>クイズ合格前にPRを更新し、証明が不足する</li>
-                <li>sub（利用者ID）不一致で証明が無効扱いになる</li>
-                <li>サーバ未デプロイで `/gate/health` が404になる</li>
-                <li>トークン不一致で `gate/evaluate` が401になる</li>
-              </ul>
+            <article className="panel table-panel">
+              <h3>運用ルール（推奨）</h3>
+              <dl className="definition-list">
+                <div>
+                  <dt>導入初期</dt>
+                  <dd>警告モードで1〜2週間運用し、誤検知と負荷を計測する</dd>
+                </div>
+                <div>
+                  <dt>本番適用</dt>
+                  <dd>重要ファイルから必須化し、対象範囲を段階的に広げる</dd>
+                </div>
+                <div>
+                  <dt>例外対応</dt>
+                  <dd>緊急バイパスは管理者のみ、理由とログを必ず残す</dd>
+                </div>
+              </dl>
             </article>
-            <article>
-              <h3>運用チェック</h3>
-              <ul>
-                <li>サーバ: `/gate/health` が `ok:true` を返すこと</li>
-                <li>ローカル: `npm run e2e:check` が `ok:true` になること</li>
-                <li>GitHub: Actionジョブが緑で完了すること</li>
-                <li>例外対応: バイパス運用時は理由とログを残すこと</li>
-              </ul>
-            </article>
-          </div>
-        </section>
+          </section>
         )}
 
         {route === 'about' && (
           <section id="about" className="section">
-          <h2>BANSOUについて</h2>
-          <p>
-            BANSOUは、コード生成を速くするためのツールではありません。
-            「理解したいと思えば理解できる状態」を維持しながら、
-            生成された変更をチームで扱うための運用基盤です。
-          </p>
-          <p>
-            ここで扱う「理解」は、変更内容の説明、影響範囲の把握、不明点の明確化です。
-            個人の努力に依存せず、チームの運用として継続できる形を目指します。
-          </p>
-          <div className="list-grid two-col">
-            <article>
-              <h3>課題と今後の展望</h3>
-              <ul>
-                <li>現状はクイズ中心の評価であり、証明の信頼性向上が最優先課題</li>
-                <li>理解支援手法を拡充し、測定の妥当性を高める必要がある</li>
-                <li>将来的には、生成と理解を一体で扱う開発環境への発展を想定</li>
-              </ul>
+            <h2>BANSOUについて</h2>
+            <p className="section-copy">
+              BANSOUは「コード生成ツール」ではなく、理解をCIに組み込む仕組みです。
+            </p>
+
+            <div className="grid two">
+              <article className="panel">
+                <h3>思想</h3>
+                <ul>
+                  <li>生成されたコードは、読む責任まで含めて扱う</li>
+                  <li>理解確認は個人努力ではなく、プロセスとして設計する</li>
+                  <li>レビューは手戻り確認より設計議論に時間を使う</li>
+                </ul>
+              </article>
+              <article className="panel">
+                <h3>現在地</h3>
+                <ul>
+                  <li>VSCode拡張、サーバ、Actionの3点で運用可能</li>
+                  <li>クイズ品質と除外判定は継続改善が必要</li>
+                  <li>将来的には理解履歴の可視化を強化予定</li>
+                </ul>
+              </article>
+            </div>
+
+            <article className="panel table-panel">
+              <h3>このサイトの記述方針</h3>
+              <dl className="definition-list">
+                <div>
+                  <dt>根拠</dt>
+                  <dd>README、実装、これまでの検証ログに基づく</dd>
+                </div>
+                <div>
+                  <dt>表現</dt>
+                  <dd>誇張せず、実際に制御できる挙動を中心に記載する</dd>
+                </div>
+                <div>
+                  <dt>更新</dt>
+                  <dd>運用変更に合わせて文面と手順を継続更新する</dd>
+                </div>
+              </dl>
             </article>
-            <article>
-              <h3>思想</h3>
-              <p>
-                BANSOUが目指すのは、理解を一部の専門家に閉じず、
-                「理解したい人が理解できる」環境を広げることです。
-                そのために、理解確認を開発プロセスの中で扱える形にします。
-              </p>
-            </article>
-          </div>
-        </section>
+          </section>
         )}
       </main>
+
+      <footer className="footer">
+        <div className="wrap footer-inner">
+          <small>© BANSOU Project</small>
+        </div>
+      </footer>
     </div>
   );
 }
