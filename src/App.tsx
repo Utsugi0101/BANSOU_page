@@ -216,45 +216,90 @@ function App() {
           <section id="adoption" className="section">
             <h2>導入</h2>
             <p className="section-copy">
-              まず検証リポジトリでE2Eを通し、動作確認後にRequired Checkを有効化します。
+              このリポジトリ（`BANSOU-VSCode` / `BANSOU-server` / `BANSOU-action` / `BANSOU-test`）の実装に沿った、
+              実運用向けの導入手順です。
             </p>
+
+            <article className="panel table-panel">
+              <h3>1. 拡張機能のインストール</h3>
+              <p>
+                Marketplace:
+                {' '}
+                <a
+                  href="https://marketplace.visualstudio.com/items?itemName=utsugi0101.bansou"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  https://marketplace.visualstudio.com/items?itemName=utsugi0101.bansou
+                </a>
+              </p>
+              <p>
+                VSCodeで拡張機能をインストールし、対象リポジトリを開いて
+                `BANSOU: Open Sidebar` を実行します。
+              </p>
+            </article>
 
             <div className="grid two">
               <article className="panel">
-                <h3>最短手順</h3>
+                <h3>2. ローカル設定</h3>
                 <ol>
-                  <li>VSCode拡張を導入し、`attestationServerUrl` と `attestationSubject` を設定</li>
-                  <li>サーバをデプロイし、署名鍵・`BANSOU_GATE_API_TOKEN` を設定</li>
-                  <li>GitHub Actionsに `Utsugi0101/bansou-action@v1` を追加</li>
-                  <li>Action入力に `issuer` `jwks_url` `gate_url` `required_quiz_id` を設定</li>
-                  <li>Branch protectionで検証ジョブを必須化する</li>
+                  <li>`understandingQuiz.attestationServerUrl` にサーバURLを設定（例: `https://bansou-server.soraki0101.workers.dev`）</li>
+                  <li>`understandingQuiz.attestationSubject` にGitHubログイン名を設定（`sub` として使われる）</li>
+                  <li>必要な場合のみ `understandingQuiz.gateApiToken` を設定（`/gate/evaluate` が認証必須の場合）</li>
+                  <li>差分取得 → クイズ生成 → 回答提出が通ることを確認</li>
                 </ol>
               </article>
               <article className="panel">
-                <h3>先に確認する項目</h3>
+                <h3>3. サーバ設定</h3>
                 <ul>
-                  <li>`/gate/health` が `ok:true` を返す</li>
-                  <li>ゲートトークンで `/gate/evaluate` が200を返す</li>
-                  <li>`npm run e2e:check` で不足差分が可視化される</li>
-                  <li>除外対象ファイルの方針をチームで合意している</li>
+                  <li>`BANSOU-server` を Cloudflare Workers にデプロイする</li>
+                  <li>`ATTEST_PUBLIC_JWK` / `ATTEST_PRIVATE_JWK` / `ISSUER` を設定する</li>
+                  <li>D1を `ATTEST_DB` としてバインドし、ledger modeを有効化する</li>
+                  <li>`OPENAI_API_KEY` と `GATE_API_TOKEN` を Secret に設定する</li>
+                  <li>`GET /gate/health` が `ok:true` になることを確認する</li>
+                </ul>
+              </article>
+            </div>
+
+            <div className="grid two">
+              <article className="panel">
+                <h3>4. GitHub Actions連携</h3>
+                <ol>
+                  <li>PRワークフローに `Utsugi0101/bansou-action@v1` を追加する</li>
+                  <li>Action入力に `issuer` `jwks_url` `required_quiz_id` `gate_url` `github_token` を設定する</li>
+                  <li>必要なら `gate_api_token` に `secrets.BANSOU_GATE_API_TOKEN` を渡す</li>
+                  <li>Branch protectionで `Verify BANSOU Token` を Required Check に設定する</li>
+                </ol>
+              </article>
+              <article className="panel">
+                <h3>5. リポジトリ側の変数/Secrets</h3>
+                <ul>
+                  <li>Variables: `BANSOU_ISSUER` / `BANSOU_JWKS_URL` / `BANSOU_GATE_URL`</li>
+                  <li>Secrets: `BANSOU_GATE_API_TOKEN`</li>
+                  <li>`required_quiz_id` は拡張とActionで同じ値（通常 `core-pr`）に揃える</li>
+                  <li>`attestationSubject` とPR作成者（GitHub login）の一致を運用ルール化する</li>
                 </ul>
               </article>
             </div>
 
             <article className="panel table-panel">
-              <h3>運用ルール（推奨）</h3>
+              <h3>6. 検証リポジトリでの受け入れ確認</h3>
               <dl className="definition-list">
                 <div>
-                  <dt>導入初期</dt>
-                  <dd>警告モードで1〜2週間運用し、誤検知と負荷を計測する</dd>
+                  <dt>クイズ生成</dt>
+                  <dd>`src/*.ts` など本質ファイル差分でクイズが生成されること（`.md/.json/.sh` は対象外）</dd>
                 </div>
                 <div>
-                  <dt>本番適用</dt>
-                  <dd>重要ファイルから必須化し、対象範囲を段階的に広げる</dd>
+                  <dt>合格時</dt>
+                  <dd>回答提出後、サーバに証明が記録され、PRゲート事前確認が成功すること</dd>
                 </div>
                 <div>
-                  <dt>例外対応</dt>
-                  <dd>緊急バイパスは管理者のみ、理由とログを必ず残す</dd>
+                  <dt>未合格時</dt>
+                  <dd>証明不足のPRは `Verify BANSOU Token` が失敗すること</dd>
+                </div>
+                <div>
+                  <dt>最終状態</dt>
+                  <dd>「クイズに合格しない限り、対象PRはマージできない」状態になること</dd>
                 </div>
               </dl>
             </article>
@@ -265,42 +310,63 @@ function App() {
           <section id="about" className="section">
             <h2>BANSOUについて</h2>
             <p className="section-copy">
-              BANSOUは「コード生成ツール」ではなく、理解をCIに組み込む仕組みです。
+              このページでは、BANSOUの制作情報と作成者情報を公開しています。
             </p>
 
             <div className="grid two">
               <article className="panel">
-                <h3>思想</h3>
+                <h3>プロジェクト情報</h3>
                 <ul>
-                  <li>生成されたコードは、読む責任まで含めて扱う</li>
-                  <li>理解確認は個人努力ではなく、プロセスとして設計する</li>
-                  <li>レビューは手戻り確認より設計議論に時間を使う</li>
+                  <li>プロジェクト名: BANSOU</li>
+                  <li>形態: VSCode拡張 + サーバ + GitHub Action</li>
+                  <li>公開先: Visual Studio Marketplace / GitHub</li>
+                  <li>作成時期: 2025年度</li>
                 </ul>
               </article>
               <article className="panel">
-                <h3>現在地</h3>
+                <h3>作成者情報</h3>
                 <ul>
-                  <li>VSCode拡張、サーバ、Actionの3点で運用可能</li>
-                  <li>クイズ品質と除外判定は継続改善が必要</li>
-                  <li>将来的には理解履歴の可視化を強化予定</li>
+                  <li>表示名: Utsugi0101</li>
+                  <li>X: @Utsugi0101</li>
+                  <li>GitHub: https://github.com/Utsugi0101</li>
+                  <li>所属: 筑波大学 情報学群 知識情報・図書館学類</li>
+                </ul>
+              </article>
+            </div>
+
+            <div className="grid two">
+              <article className="panel">
+                <h3>制作情報</h3>
+                <ul>
+                  <li>本作品は SecHack365 2025年度 思索駆動コースで作成しました</li>
+                  <li>制作の主眼は「理解を工程として扱う開発運用」の実装です</li>
+                  <li>研究・開発・運用をまたぐ形で継続的に改善しています</li>
+                </ul>
+              </article>
+              <article className="panel">
+                <h3>公開ノート</h3>
+                <ul>
+                  <li>導入手順と運用情報は、このページおよび各リポジトリREADMEで更新します</li>
+                  <li>プロダクトの仕様は検証結果に合わせて調整します</li>
+                  <li>公開情報は、実装と整合する範囲で記載します</li>
                 </ul>
               </article>
             </div>
 
             <article className="panel table-panel">
-              <h3>このサイトの記述方針</h3>
+              <h3>記載ポリシー</h3>
               <dl className="definition-list">
                 <div>
-                  <dt>根拠</dt>
-                  <dd>README、実装、これまでの検証ログに基づく</dd>
+                  <dt>事実確認</dt>
+                  <dd>README・実装・運用設定と整合した内容のみ記載する</dd>
                 </div>
                 <div>
-                  <dt>表現</dt>
-                  <dd>誇張せず、実際に制御できる挙動を中心に記載する</dd>
+                  <dt>機微情報</dt>
+                  <dd>トークン・秘密鍵・個人情報を公開文面に含めない</dd>
                 </div>
                 <div>
-                  <dt>更新</dt>
-                  <dd>運用変更に合わせて文面と手順を継続更新する</dd>
+                  <dt>更新運用</dt>
+                  <dd>導入手順と設定項目は、仕様変更ごとに更新する</dd>
                 </div>
               </dl>
             </article>
